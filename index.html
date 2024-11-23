@@ -16,7 +16,7 @@
     }
     h1 {
       margin-top: 20px;
-      font-size: 2.5em;
+      font-size: 2em;
       color: #8b4513; /* SaddleBrown color */
     }
     #gameArea {
@@ -27,6 +27,9 @@
       border: 2px solid #1c1c1c; /* Dark border */
       margin: 20px auto;
       background-color: #fffaf0; /* FloralWhite background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     #catchButton {
       position: absolute;
@@ -47,6 +50,16 @@
       font-size: 2em;
       color: #228b22; /* ForestGreen color */
       margin-top: 20px;
+    }
+    /* Ensuring button is responsive */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.5em;
+      }
+      #catchButton {
+        padding: 10px 20px;
+        font-size: 16px;
+      }
     }
   </style>
 </head>
@@ -76,7 +89,7 @@
       catchButton.style.top = `${randomY}px`;
     }
 
-    // Move the button when the mouse gets close
+    // Move the button when the mouse gets close (mobile and desktop)
     gameArea.addEventListener('mousemove', (event) => {
       const rect = catchButton.getBoundingClientRect();
 
@@ -93,6 +106,23 @@
       }
     });
 
+    // Move the button on touch for mobile
+    gameArea.addEventListener('touchmove', (event) => {
+      const rect = catchButton.getBoundingClientRect();
+
+      const touchX = event.touches[0].clientX;
+      const touchY = event.touches[0].clientY;
+
+      // Calculate the distance between the touch and the button
+      const distanceX = Math.abs(touchX - (rect.left + rect.width / 2));
+      const distanceY = Math.abs(touchY - (rect.top + rect.height / 2));
+
+      // If the touch is close to the button, move it
+      if (distanceX < 100 && distanceY < 100) {
+        moveButton();
+      }
+    });
+
     // When the button is clicked
     catchButton.addEventListener('click', () => {
       youWinMessage.style.display = 'block'; // Show win message
@@ -104,3 +134,4 @@
   </script>
 </body>
 </html>
+
