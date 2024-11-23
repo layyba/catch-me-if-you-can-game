@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catch Me If You Can!</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f5f5dc; /* Beige background */
+      color: #1c1c1c; /* Dark text color */
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    h1 {
+      margin-top: 20px;
+      font-size: 2.5em;
+      color: #8b4513; /* SaddleBrown color */
+    }
+    #gameArea {
+      position: relative;
+      width: 100vw;
+      height: 90vh;
+      overflow: hidden;
+      border: 2px solid #1c1c1c; /* Dark border */
+      margin: 20px auto;
+      background-color: #fffaf0; /* FloralWhite background */
+    }
+    #catchButton {
+      position: absolute;
+      padding: 15px 30px;
+      font-size: 18px;
+      background-color: #deb887; /* BurlyWood background */
+      color: #1c1c1c; /* Dark text */
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+    #catchButton:hover {
+      transform: scale(1.1);
+    }
+    #youWin {
+      display: none;
+      font-size: 2em;
+      color: #228b22; /* ForestGreen color */
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Click on the button for a surprise!</h1>
+  <div id="gameArea">
+    <button id="catchButton">Click for Fun!</button>
+  </div>
+  <p id="youWin">You caught me! 🎉</p>
+
+  <script>
+    const catchButton = document.getElementById('catchButton');
+    const gameArea = document.getElementById('gameArea');
+    const youWinMessage = document.getElementById('youWin');
+
+    // Function to move the button to a random position
+    function moveButton() {
+      const areaWidth = gameArea.clientWidth;
+      const areaHeight = gameArea.clientHeight;
+
+      // Calculate random positions within the game area
+      const randomX = Math.random() * (areaWidth - catchButton.offsetWidth);
+      const randomY = Math.random() * (areaHeight - catchButton.offsetHeight);
+
+      // Set the button's new position
+      catchButton.style.left = `${randomX}px`;
+      catchButton.style.top = `${randomY}px`;
+    }
+
+    // Move the button when the mouse gets close
+    gameArea.addEventListener('mousemove', (event) => {
+      const rect = catchButton.getBoundingClientRect();
+
+      const mouseX = event.clientX;
+      const mouseY = event.clientY;
+
+      // Calculate the distance between the mouse and the button
+      const distanceX = Math.abs(mouseX - (rect.left + rect.width / 2));
+      const distanceY = Math.abs(mouseY - (rect.top + rect.height / 2));
+
+      // If the mouse is close to the button, move it
+      if (distanceX < 100 && distanceY < 100) {
+        moveButton();
+      }
+    });
+
+    // When the button is clicked
+    catchButton.addEventListener('click', () => {
+      youWinMessage.style.display = 'block'; // Show win message
+      catchButton.style.display = 'none'; // Hide the button
+    });
+
+    // Initial position of the button
+    moveButton();
+  </script>
+</body>
+</html>
